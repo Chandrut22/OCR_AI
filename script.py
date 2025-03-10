@@ -3,7 +3,6 @@ import google.generativeai as genai
 import mimetypes
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 def generate():
@@ -12,7 +11,7 @@ def generate():
 
     if not api_key:
         print("Error: GEMINI_API_KEY environment variable not set in .env file.")
-        return  # Exit if the API key is missing
+        return  
 
     genai.configure(api_key=api_key)
 
