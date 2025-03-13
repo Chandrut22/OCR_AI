@@ -10,12 +10,11 @@ app = Flask(__name__)
 
 api_key = os.getenv("GEMINI_API_KEY")
 if not api_key:
-    raise ValueError("GEMINI_API_KEY environment variable not set in .env file.")
+    raise ValueError("No environment variable not set in .env file.")
 
 genai.configure(api_key=api_key)
 
 def extract_text_from_image(file):
-    """Process the image with Gemini API and return extracted text."""
     mime_type = mimetypes.guess_type(file.filename)[0]
     if not mime_type:
         mime_type = "application/octet-stream"
@@ -23,7 +22,7 @@ def extract_text_from_image(file):
     image_part = {"mime_type": mime_type, "data": file.read()}
 
     model = "gemini-2.0-flash"
-    parts = [image_part, "What text is in the image?"]
+    parts = [image_part, "What text is in the image? and give the text only."]
 
     generation_config = genai.GenerationConfig(
         temperature=1,
@@ -47,12 +46,10 @@ def extract_text_from_image(file):
 
 @app.route("/")
 def index():
-    """Render the homepage."""
     return render_template("index.html")
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
-    """Handle file uploads and return extracted text."""
     if "file" not in request.files:
         return jsonify({"error": "No file part"}), 400
 
